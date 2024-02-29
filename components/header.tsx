@@ -1,5 +1,13 @@
+
+
 import { auth, signOut } from '@/auth';
 import Link from 'next/link';
+import { MobileSidebar } from "@/components/layout/mobile-sidebar";
+import ThemeToggle from "@/components/layout/ThemeToggle/theme-toggle";
+import { cn } from "@/lib/utils";
+import { UserNav } from "@/components/layout/user-nav";
+import { NavigationMenuDemo } from "@/components/layout/pub-nav";
+import * as React from "react"
 
 const Header = async () => {
   const session = await auth();
@@ -10,55 +18,42 @@ const Header = async () => {
     await signOut();
   };
 
+ 
+
   return (
-    <header className='bg-white h-20'>
-      <nav className='h-full flex justify-between container items-center'>
-        <div>
-          <Link href='/' className='text-ct-dark-600 text-2xl font-semibold'>
-            CodevoWeb
+    <div className="fixed top-0 left-0 right-0 supports-backdrop-blur:bg-background/60 border-b bg-background/95 backdrop-blur z-20">
+    <nav className="h-14 flex items-center justify-between px-4">
+      <div className="hidden lg:flex flex-row items-center">
+        <div className="basis-1/2">
+          
+          <Link
+            href={"/"}
+          >
+            <img src="/images/logo-lppsa.png" alt="" width="100"/>
           </Link>
+
         </div>
-        <ul className='flex items-center space-x-4'>
-          <li>
-            <Link href='/' className='text-ct-dark-600'>
-              Home
-            </Link>
-          </li>
-          {!user && (
-            <>
-              <li>
-                <Link href='/register' className='text-ct-dark-600'>
-                  Register
-                </Link>
-              </li>
-              <li>
-                <Link href='/login' className='text-ct-dark-600'>
-                  Login
-                </Link>
-              </li>
-            </>
-          )}
-          {user && (
-            <form action={logoutAction} className='flex'>
-              <li>
-                <Link href='/client-side' className='text-ct-dark-600'>
-                  Client
-                </Link>
-              </li>
-              <li className='ml-4'>
-                <Link href='/profile' className='text-ct-dark-600'>
-                  Profile
-                </Link>
-              </li>
-              <li className='ml-4'>
-                <button>Logout</button>
-              </li>
-            </form>
-          )}
-        </ul>
-      </nav>
-    </header>
+        <div className="basis-1/2 pl-10">
+          <NavigationMenuDemo />
+        </div>
+      
+      
+      </div>
+      <div className={cn("block lg:!hidden")}>
+        <MobileSidebar />
+      </div>
+
+      <div className="flex items-center gap-2">
+      
+        <UserNav />
+        <ThemeToggle />
+      </div>
+    </nav>
+  </div>
   );
 };
 
 export default Header;
+
+
+

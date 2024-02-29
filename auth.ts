@@ -60,11 +60,23 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       const isProtected = paths.some((path) =>
         nextUrl.pathname.startsWith(path)
       );
+      const pathsNotProtected = ['/login', '/register'];
+      const isNotProtected = pathsNotProtected.some((path) =>
+        nextUrl.pathname.startsWith(path)
+      );
+
+      console.log(isProtected ,isLoggedIn)
 
       if (isProtected && !isLoggedIn) {
         const redirectUrl = new URL('/api/auth/signin', nextUrl.origin);
         redirectUrl.searchParams.append('callbackUrl', nextUrl.href);
         return Response.redirect(redirectUrl);
+      }
+      if(isNotProtected  && isLoggedIn){
+        const redirectUrl = new URL('/profile', nextUrl.origin);
+        redirectUrl.searchParams.append('callbackUrl', nextUrl.href);
+        return Response.redirect(redirectUrl);
+
       }
       return true;
     },
